@@ -1,7 +1,25 @@
 <!doctype html>
-
+<html>
+<head>
+<meta charset="utf-8">
 <script src="dsbridge.min.js"></script>
+<style>
+body{
+    background:#111;
+    color:#0f0;
+    font:22px monospace;
+    margin:20px;
+}
+pre{
+    white-space:pre-wrap;
+    word-break:break-all;
+    font-size:22px;
+    line-height:1.5;
+}
+</style>
+</head>
 
+<body>
 <pre id="out">Waiting...</pre>
 
 <script>
@@ -9,13 +27,17 @@ const out = document.getElementById("out");
 
 try {
     const bridge = window.dsBridge || window._dsbridge;
-    out.textContent = "Bridge: " + typeof bridge + "\nCalling...";
+    out.textContent = "Bridge: " + typeof bridge + "\nCalling getUserAuth...\n";
 
-    bridge.call("getUserAuth", {}, function(r) {
-        out.textContent += "\n\nRaw response:\n" + JSON.stringify(r, null, 2);
+    bridge.call("getUserAuth", {}, function(resp) {
+        out.textContent += "\n===== RESPONSE =====\n";
+        out.textContent += JSON.stringify(resp, null, 2);
     });
 
 } catch(e) {
-    out.textContent += "\n\nError:\n" + e;
+    out.textContent = "ERROR:\n" + e;
 }
 </script>
+
+</body>
+</html>
