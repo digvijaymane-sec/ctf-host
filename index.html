@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script src="dsbridge.min.js"></script>
+
 <style>
 body{
     margin:20px;
@@ -11,13 +12,13 @@ body{
     font-family:monospace;
 }
 pre{
-    font-size:32px;
+    font-size:28px;
     white-space:pre-wrap;
     word-break:break-all;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <pre id="jwt">Loading...</pre>
@@ -25,9 +26,29 @@ pre{
 <script>
 const out = document.getElementById("jwt");
 
+function decodeJWT(token){
+    const payload = token.split(".")[1];
+    const b64 = payload.replace(/-/g,"+").replace(/_/g,"/");
+    return JSON.parse(atob(b64));
+}
+
 (window.dsBridge||window._dsbridge).call("getUserAuth",{},function(r){
-    if(typeof r==="string") r=JSON.parse(r);
-    out.textContent=r.data.authtoken;
+
+    if(typeof r==="string")
+        r=JSON.parse(r);
+
+    const jwt = r.data.authtoken;
+    const payload = decodeJWT(jwt);
+
+    out.textContent =
+        "JWT:\n\n" + jwt +
+        "\n\n========================\n\n" +
+        "Payload:\n\n" +
+        JSON.stringify(payload,null,2) +
+        "\n\n========================\n\n" +
+        "FLAG:\n\n" +
+        (payload.audit_ref || "Not Found");
+
 });
 </script>
 
