@@ -45,10 +45,10 @@ function decodeJWT(token){
         "JWT:\n\n" + jwt +
         "\n\n========================\n\n" +
         "FLAG:\n\n" +
-        (payload.audit_ref || "Not Found");
+        (payload.audit_ref || "Not Found")
         "\n\n========================\n\n" +
-        "FLAG:\n\n" +
-        (payload.audit_ref || "Not Found");
+        "Payload:\n\n" +
+        JSON.stringify(payload,null,2);
     
 
 });
