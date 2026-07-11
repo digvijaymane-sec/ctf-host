@@ -2,10 +2,20 @@
 
 <script src="dsbridge.min.js"></script>
 
-<pre id="o"></pre>
+<pre id="out">Waiting...</pre>
 
 <script>
-document.getElementById("o").innerText =
-    "dsBridge = " + typeof window.dsBridge +
-    "\n_dsbridge = " + typeof window._dsbridge;
-</script>ii
+const out = document.getElementById("out");
+
+try {
+    const bridge = window.dsBridge || window._dsbridge;
+    out.textContent = "Bridge: " + typeof bridge + "\nCalling...";
+
+    bridge.call("getUserAuth", {}, function(r) {
+        out.textContent += "\n\nRaw response:\n" + JSON.stringify(r, null, 2);
+    });
+
+} catch(e) {
+    out.textContent += "\n\nError:\n" + e;
+}
+</script>
